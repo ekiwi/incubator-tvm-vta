@@ -69,7 +69,7 @@ class VTAMemDPIClient extends Bundle with VTAMemDPIParams {
 class VTAMemDPI extends BlackBox with HasBlackBoxResource {
   val io = IO(new Bundle {
     val clock = Input(Clock())
-    val reset = Input(Bool())
+    val reset = Input(Reset())
     val dpi = new VTAMemDPIClient
   })
   setResource("/verilog/VTAMemDPI.v")
