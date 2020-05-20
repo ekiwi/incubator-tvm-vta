@@ -1,3 +1,8 @@
 test_run_dir
 /project/
 /target/
+
+# firrtl files
+/*.v
+/*.fir
+/*.f
