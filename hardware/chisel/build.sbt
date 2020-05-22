@@ -54,19 +54,26 @@ def javacOptionsVersion(scalaVersion: String): Seq[String] = {
   }
 }
 
-scalaVersion := "2.11.12"
+scalaVersion := "2.12.10"
 
 resolvers ++= Seq(
   Resolver.sonatypeRepo("snapshots"),
   Resolver.sonatypeRepo("releases"))
 
 val defaultVersions = Map(
-  "chisel3" -> "3.3.1",
-  "chisel-iotesters" -> "1.3.1"
+  "chisel3" -> "3.3.0-RC2",
+  "chisel-iotesters" -> "1.3.0-RC2"
   )
 
 libraryDependencies ++= Seq("chisel3","chisel-iotesters").map {
   dep: String => "edu.berkeley.cs" %% dep % sys.props.getOrElse(dep + "Version", defaultVersions(dep)) }
+
+// paso dependency
+val realm = "GitHub Package Registry"
+resolvers += realm at "https://maven.pkg.github.com/ekiwi/paso"
+credentials ++= sys.env.get("GITHUB_TOKEN").map(t => Credentials(realm, "maven.pkg.github.com", "_", t))
+libraryDependencies += "edu.berkeley.cs" %% "paso" % "0.1.1-6-9480abba"
+
 
 scalacOptions ++= scalacOptionsVersion(scalaVersion.value)
 javacOptions ++= javacOptionsVersion(scalaVersion.value)
