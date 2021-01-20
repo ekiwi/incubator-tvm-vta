@@ -23,6 +23,9 @@ organization := "edu.washington.cs"
 
 scalaVersion := "2.12.12"
 scalacOptions += "-Xsource:2.11"
+scalacOptions += "-deprecation"
+// TODO: enable
+// scalacOptions += "-feature"
 
 resolvers ++= Seq(Resolver.sonatypeRepo("snapshots"))
 libraryDependencies += "edu.berkeley.cs" %% "chisel3" % "3.5-SNAPSHOT"
