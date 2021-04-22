@@ -52,17 +52,10 @@ object JSONMaxBurstLength {
  */
 class TensorLoadNarrowVME(tensorType: String = "none", debug: Boolean = false)(
     implicit p: Parameters)
-    extends Module {
+    extends Module with IsTensorLoad {
   val tp = new TensorParams(tensorType)
   val mp = p(ShellKey).memParams
-  val io = IO(new Bundle {
-    val start = Input(Bool())
-    val done = Output(Bool())
-    val inst = Input(UInt(INST_BITS.W))
-    val baddr = Input(UInt(mp.addrBits.W))
-    val vme_rd = new VMEReadMaster
-    val tensor = new TensorClient(tensorType)
-  })
+  val io = IO(new TensorLoadIO(mp, tensorType))
   val writeDelay = tp.writeDelay
 
   val sIdle :: sBusy :: Nil =
