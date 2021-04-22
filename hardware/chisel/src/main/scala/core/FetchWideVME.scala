@@ -45,20 +45,10 @@ import vta.verif.{TraceMgr => trace_mgr}
  * more than one instruction at the time. Finally, the instruction queue is
  * sized (entries_q), depending on the maximum burst allowed in the memory.
  */
-class FetchWideVME(debug: Boolean = false)(implicit p: Parameters) extends Module {
+class FetchWideVME(debug: Boolean = false)(implicit p: Parameters) extends Module with IsFetch {
   val vp = p(ShellKey).vcrParams
   val mp = p(ShellKey).memParams
-  val io = IO(new Bundle {
-    val launch = Input(Bool())
-    val ins_baddr = Input(UInt(mp.addrBits.W))
-    val ins_count = Input(UInt(vp.regBits.W))
-    val vme_rd = new VMEReadMaster
-    val inst = new Bundle {
-      val ld = Decoupled(UInt(INST_BITS.W))
-      val co = Decoupled(UInt(INST_BITS.W))
-      val st = Decoupled(UInt(INST_BITS.W))
-    }
-  })
+  val io = IO(new FetchIO(mp, vp))
 //  val entries_q = 1 << (mp.lenBits - 1) // one-instr-every-two-vme-word
 //  val inst_q = Module(new SyncQueue2PortMem(UInt(INST_BITS.W), entries_q))
 
@@ -294,7 +284,7 @@ class FetchWideVME(debug: Boolean = false)(implicit p: Parameters) extends Modul
     }
   }.otherwise {
     // check if queueCount === 0.U -> queueHeadNext === 0.U
-    assert(reset.toBool || state === sIdle || queueCount =/= 0.U ||
+    assert(reset.asBool() || state === sIdle || queueCount =/= 0.U ||
       (queueCount === 0.U && queueHeadNext === 0.U))
     queueHead := queueHeadNext
     queueHeadNext := queueHeadNext
