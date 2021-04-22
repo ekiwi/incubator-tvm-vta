@@ -23,10 +23,24 @@ package vta.core
 
 import chisel3._
 import chisel3.util._
+import vta.interface.axi.AXIParams
 import vta.util.config._
 import vta.shell._
 import vta.util._
 import vta.verif.{TraceMgr => trace_mgr}
+
+class FetchIO(mp: AXIParams, vp: VCRParams)(implicit p: Parameters)  extends Bundle {
+  val launch = Input(Bool())
+  val ins_baddr = Input(UInt(mp.addrBits.W))
+  val ins_count = Input(UInt(vp.regBits.W))
+  val vme_rd = new VMEReadMaster
+  val inst = new Bundle {
+    val ld = Decoupled(UInt(INST_BITS.W))
+    val co = Decoupled(UInt(INST_BITS.W))
+    val st = Decoupled(UInt(INST_BITS.W))
+  }
+}
+trait IsFetch { val io: FetchIO }
 
 /** Fetch.
  *
@@ -46,17 +60,7 @@ import vta.verif.{TraceMgr => trace_mgr}
 class Fetch(debug: Boolean = false)(implicit p: Parameters) extends Module {
   val vp = p(ShellKey).vcrParams
   val mp = p(ShellKey).memParams
-  val io = IO(new Bundle {
-    val launch = Input(Bool())
-    val ins_baddr = Input(UInt(mp.addrBits.W))
-    val ins_count = Input(UInt(vp.regBits.W))
-    val vme_rd = new VMEReadMaster
-    val inst = new Bundle {
-      val ld = Decoupled(UInt(INST_BITS.W))
-      val co = Decoupled(UInt(INST_BITS.W))
-      val st = Decoupled(UInt(INST_BITS.W))
-    }
-  })
+  val io = IO(new FetchIO(mp, vp))
   if (JSONFeatures.fetchOld()) {
     require (mp.dataBits <= 128, "-F- Old VME data transfer doesnt support fetch data wider than instruction.")
   }
