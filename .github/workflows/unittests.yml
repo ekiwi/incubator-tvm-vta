@@ -75,3 +75,13 @@ jobs:
        echo "Z3"
        z3 --version
        which z3
+
+    - name: Compile
+      run: |
+       cd hardware/chisel
+       sbt compile
+
+    - name: Tests
+      run: |
+       cd hardware/chisel
+       sbt test
