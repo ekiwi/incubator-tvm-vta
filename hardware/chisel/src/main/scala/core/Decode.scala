@@ -38,7 +38,6 @@ import ISA._
  *   - LACC
  *   - SOUT
  */
-@chiselName
 class MemDecode extends Bundle {
   val xpad_1 = UInt(M_PAD_BITS.W)
   val xpad_0 = UInt(M_PAD_BITS.W)
@@ -64,7 +63,6 @@ class MemDecode extends Bundle {
  * Decode GEMM instruction with a Bundle. This is similar to an union,
  * therefore order matters when declaring fields.
  */
-@chiselName
 class GemmDecode(implicit val p: Parameters) extends Bundle {
   val freeBitsHigh = INST_BITS/2 -
     ( 2 * p(CoreKey).wgtFactorBits +
@@ -112,7 +110,6 @@ class GemmDecode(implicit val p: Parameters) extends Bundle {
  *   - VMOV
  *   - VMUL
  */
-@chiselName
 class AluDecode(implicit val p: Parameters) extends Bundle {
   val freeBitsHigh = INST_BITS/2 -
     ( C_ALU_IMM_BITS +
@@ -153,7 +150,6 @@ class AluDecode(implicit val p: Parameters) extends Bundle {
  *
  * Decode micro-ops (uops).
  */
-@chiselName
 class UopDecode(implicit val p: Parameters) extends Bundle {
   require(log2Ceil(p(CoreKey).inpMemDepth) + log2Ceil(p(CoreKey).accMemDepth) <= 32,
     "Must fit inp and acc fields in lower 32 bits of uop given current padding assumptions")
@@ -182,7 +178,6 @@ class UopDecode(implicit val p: Parameters) extends Bundle {
  *
  * Partial decoding for dispatching instructions to Load, Compute, and Store.
  */
-@chiselName
 class FetchDecode extends Module {
   val io = IO(new Bundle {
     val inst = Input(UInt(INST_BITS.W))
@@ -220,7 +215,6 @@ class FetchDecode extends Module {
  *
  * Decode dependencies, type and sync for Load module.
  */
-@chiselName
 class LoadDecode extends Module {
   val io = IO(new Bundle {
     val inst = Input(UInt(INST_BITS.W))
@@ -242,7 +236,6 @@ class LoadDecode extends Module {
  *
  * Decode dependencies, type and sync for Compute module.
  */
-@chiselName
 class ComputeDecode extends Module {
   val io = IO(new Bundle {
     val inst = Input(UInt(INST_BITS.W))
@@ -274,7 +267,6 @@ class ComputeDecode extends Module {
  *
  * Decode dependencies, type and sync for Store module.
  */
-@chiselName
 class StoreDecode extends Module {
   val io = IO(new Bundle {
     val inst = Input(UInt(INST_BITS.W))
