@@ -23,9 +23,22 @@ package vta.core
 
 import chisel3._
 import chisel3.util._
+import vta.interface.axi.AXIParams
 import vta.util.config._
 import vta.shell._
 import vta.verif.{TraceMgr => trace_mgr}
+
+class TensorStoreIO(val mp: AXIParams, val tensorType: String)(implicit p: Parameters) extends Bundle {
+  val start = Input(Bool())
+  val done = Output(Bool())
+  val inst = Input(UInt(INST_BITS.W))
+  val baddr = Input(UInt(mp.addrBits.W))
+  val vme_wr = new VMEWriteMaster
+  val tensor = new TensorClient(tensorType)
+}
+
+trait IsTensorStore { val io: TensorStoreIO }
+
 
 /** TensorStore.
  *
@@ -33,17 +46,10 @@ import vta.verif.{TraceMgr => trace_mgr}
  */
 class TensorStore(tensorType: String = "none", debug: Boolean = false)(
     implicit p: Parameters)
-    extends Module {
+    extends Module with IsTensorStore {
   val tp = new TensorParams(tensorType)
   val mp = p(ShellKey).memParams
-  val io = IO(new Bundle {
-    val start = Input(Bool())
-    val done = Output(Bool())
-    val inst = Input(UInt(INST_BITS.W))
-    val baddr = Input(UInt(mp.addrBits.W))
-    val vme_wr = new VMEWriteMaster
-    val tensor = new TensorClient(tensorType)
-  })
+  val io = IO(new TensorStoreIO(mp, tensorType))
 
   override def desiredName = "TensorStore" + tensorType.capitalize
 
