@@ -34,12 +34,12 @@ import vta.test._
  * These configurations are built in a mix/match form based on core
  * and shell configurations.
  */
-class DefaultPynqConfig extends Config(new CoreConfig ++ new PynqConfig ++ new DpiConfig)
-class JSONPynqConfig extends Config(new JSONCoreConfig ++ new JSONShlPynqConfig ++ new JSONDpiConfig)
-class DefaultF1Config extends Config(new CoreConfig ++ new F1Config ++ new DpiConfig)
-class DefaultDe10Config extends Config(new CoreConfig ++ new De10Config ++ new DpiConfig)
-class JSONDe10Config extends Config(new JSONCoreConfig ++ new JSONShlDe10Config ++ new JSONDpiConfig)
-class JSONMinimalConfig extends Config(new JSONCoreConfig ++ new MinimalConfig ++ new DpiConfig)
+class DefaultPynqConfig extends Config(new CoreConfig ++ new PynqConfig)// ++ new DpiConfig)
+class JSONPynqConfig extends Config(new JSONCoreConfig ++ new JSONShlPynqConfig)// ++ new JSONDpiConfig)
+class DefaultF1Config extends Config(new CoreConfig ++ new F1Config)// ++ new DpiConfig)
+class DefaultDe10Config extends Config(new CoreConfig ++ new De10Config)// ++ new DpiConfig)
+class JSONDe10Config extends Config(new JSONCoreConfig ++ new JSONShlDe10Config)// ++ new JSONDpiConfig)
+class JSONMinimalConfig extends Config(new JSONCoreConfig ++ new MinimalConfig)// ++ new DpiConfig)
 
 object DefaultPynqConfig extends App {
   implicit val p: Parameters = new DefaultPynqConfig
