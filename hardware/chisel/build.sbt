@@ -28,11 +28,10 @@ scalacOptions += "-Xsource:2.11"
 scalacOptions += "-deprecation"
 
 resolvers += Resolver.sonatypeRepo("snapshots")
-libraryDependencies += "edu.berkeley.cs" %% "chisel3" % "3.4.3"
-libraryDependencies += "edu.berkeley.cs" %% "chisel-iotesters" % "1.5.3"
+libraryDependencies += "edu.berkeley.cs" %% "chisel3" % "3.5-SNAPSHOT"
+libraryDependencies += "edu.berkeley.cs" %% "chisel-iotesters" % "2.5-SNAPSHOT"
+addCompilerPlugin("edu.berkeley.cs" % "chisel3-plugin" % "3.5-SNAPSHOT" cross CrossVersion.full)
 
 // Intel added an XML library
 libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % "2.10.3"
 libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.10.3"
-
-addCompilerPlugin("edu.berkeley.cs" % "chisel3-plugin" % "3.4.3" cross CrossVersion.full)
