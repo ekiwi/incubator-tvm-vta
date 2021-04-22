@@ -37,17 +37,10 @@ import vta.shell._
  */
 class TensorLoadOrig(tensorType: String = "none", debug: Boolean = false)(
     implicit p: Parameters)
-    extends Module {
+    extends Module with IsTensorLoad {
   val tp = new TensorParams(tensorType)
   val mp = p(ShellKey).memParams
-  val io = IO(new Bundle {
-    val start = Input(Bool())
-    val done = Output(Bool())
-    val inst = Input(UInt(INST_BITS.W))
-    val baddr = Input(UInt(mp.addrBits.W))
-    val vme_rd = new VMEReadMaster
-    val tensor = new TensorClient(tensorType)
-  })
+  val io = IO(new TensorLoadIO(mp, tensorType))
 
   require(tp.numMemBlock > 0, s"-F- Unexpected data to tensor bit size ratio. ${tensorType} ${tp.numMemBlock}")
   require(tp.splitWidth == 1 && tp.splitLength == 1, s"-F- Cannot do split direct access")

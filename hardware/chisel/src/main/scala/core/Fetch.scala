@@ -29,7 +29,7 @@ import vta.shell._
 import vta.util._
 import vta.verif.{TraceMgr => trace_mgr}
 
-class FetchIO(mp: AXIParams, vp: VCRParams)(implicit p: Parameters)  extends Bundle {
+class FetchIO(val mp: AXIParams, val vp: VCRParams)(implicit p: Parameters)  extends Bundle {
   val launch = Input(Bool())
   val ins_baddr = Input(UInt(mp.addrBits.W))
   val ins_count = Input(UInt(vp.regBits.W))

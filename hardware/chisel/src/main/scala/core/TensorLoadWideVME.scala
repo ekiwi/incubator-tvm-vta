@@ -68,17 +68,10 @@ import vta.verif.{TraceMgr => trace_mgr}
  */
 class TensorLoadWideVME(tensorType: String = "none", debug: Boolean = false)(
     implicit p: Parameters)
-    extends Module {
+    extends Module with IsTensorLoad {
   val tp = new TensorParams(tensorType)
   val mp = p(ShellKey).memParams
-  val io = IO(new Bundle {
-    val start = Input(Bool())
-    val done = Output(Bool())
-    val inst = Input(UInt(INST_BITS.W))
-    val baddr = Input(UInt(mp.addrBits.W))
-    val vme_rd = new VMEReadMaster
-    val tensor = new TensorClient(tensorType)
-  })
+  val io = IO(new TensorLoadIO(mp, tensorType))
   // the delay cycles of write pipe. Needed to deliver singal over physical distance
   val writeDelay = tp.writeDelay
 
