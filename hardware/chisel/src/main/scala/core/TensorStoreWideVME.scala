@@ -34,17 +34,10 @@ import vta.verif.{TraceMgr => trace_mgr}
  */
 class TensorStoreWideVME(tensorType: String = "none", debug: Boolean = false)(
     implicit p: Parameters)
-    extends Module {
+    extends Module with IsTensorStore {
   val tp = new TensorParams(tensorType)
   val mp = p(ShellKey).memParams
-  val io = IO(new Bundle {
-    val start = Input(Bool())
-    val done = Output(Bool())
-    val inst = Input(UInt(INST_BITS.W))
-    val baddr = Input(UInt(mp.addrBits.W))
-    val vme_wr = new VMEWriteMaster
-    val tensor = new TensorClient(tensorType)
-  })
+  val io = IO(new TensorStoreIO(mp, tensorType))
   val writeDelay = tp.writeDelay
   // Store write is delayed by writeDelay
   // postpone start by the same number of cycles
