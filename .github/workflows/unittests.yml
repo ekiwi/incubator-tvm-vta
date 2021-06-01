@@ -1,0 +1,22 @@
+name: VTA Chisel Hardware Unit Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Compile
+      run: |
+       cd hardware/chisel
+       sbt compile
+
+    - name: Tests
+      run: |
+       cd hardware/chisel
+       sbt test
