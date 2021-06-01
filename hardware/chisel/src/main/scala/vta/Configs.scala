@@ -21,7 +21,6 @@
 
 package vta
 
-import chisel3._
 import vta.util.config._
 import vta.shell._
 import vta.core._
@@ -43,60 +42,60 @@ class JSONMinimalConfig extends Config(new JSONCoreConfig ++ new MinimalConfig +
 
 object DefaultPynqConfig extends App {
   implicit val p: Parameters = new DefaultPynqConfig
-  chisel3.Driver.execute(args, () => new XilinxShell)
+  (new chisel3.stage.ChiselStage).emitSystemVerilog(new XilinxShell, args)
 }
 
 object JSONPynqConfig extends App {
   implicit val p: Parameters = new JSONPynqConfig
-  chisel3.Driver.execute(args, () => new XilinxShell)
+  (new chisel3.stage.ChiselStage).emitSystemVerilog(new XilinxShell, args)
 }
 
 object DefaultF1Config extends App {
   implicit val p: Parameters = new DefaultF1Config
-  chisel3.Driver.execute(args, () => new XilinxShell)
+  (new chisel3.stage.ChiselStage).emitSystemVerilog(new XilinxShell, args)
 }
 
 object DefaultDe10Config extends App {
   implicit val p: Parameters = new DefaultDe10Config
-  chisel3.Driver.execute(args, () => new IntelShell)
+  (new chisel3.stage.ChiselStage).emitSystemVerilog(new IntelShell, args)
 }
 
 object JSONDe10Config extends App {
   implicit val p: Parameters = new JSONDe10Config
-  chisel3.Driver.execute(args, () => new IntelShell)
+  (new chisel3.stage.ChiselStage).emitSystemVerilog(new IntelShell, args)
 }
 
 object JSONMinimalConfig extends App {
   implicit val p: Parameters = new JSONMinimalConfig
-  chisel3.Driver.execute(args, () => new IntelShell)
+  (new chisel3.stage.ChiselStage).emitSystemVerilog(new IntelShell, args)
 }
 
 object TestDefaultPynqConfig extends App {
   implicit val p: Parameters = new DefaultPynqConfig
-  chisel3.Driver.execute(args, () => new Test)
+  (new chisel3.stage.ChiselStage).emitSystemVerilog(new Test, args)
 }
 
 object TestJSONPynqConfig extends App {
   implicit val p: Parameters = new JSONPynqConfig
-  chisel3.Driver.execute(args, () => new Test)
+  (new chisel3.stage.ChiselStage).emitSystemVerilog(new Test, args)
 }
 
 object TestDefaultF1Config extends App {
   implicit val p: Parameters = new DefaultF1Config
-  chisel3.Driver.execute(args, () => new Test)
+  (new chisel3.stage.ChiselStage).emitSystemVerilog(new Test, args)
 }
 
 object TestDefaultDe10Config extends App {
   implicit val p: Parameters = new DefaultDe10Config
-  chisel3.Driver.execute(args, () => new Test)
+  (new chisel3.stage.ChiselStage).emitSystemVerilog(new Test, args)
 }
 
 object TestJSONDe10Config extends App {
   implicit val p: Parameters = new JSONDe10Config
-  chisel3.Driver.execute(args, () => new Test)
+  (new chisel3.stage.ChiselStage).emitSystemVerilog(new Test, args)
 }
 
 object TestJSONMinimalConfig extends App {
   implicit val p: Parameters = new JSONMinimalConfig
-  chisel3.Driver.execute(args, () => new Test)
+  (new chisel3.stage.ChiselStage).emitSystemVerilog(new Test, args)
 }

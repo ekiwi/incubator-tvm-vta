@@ -514,11 +514,11 @@ class TwoPortMem[T <: Data](
 //*****************************************************************************
 object SyncQueueMain {
   def main(args: Array[String]): Unit = {
-    chisel3.Driver.execute(args, () => new SyncQueue1PortMem(UInt(16.W), 8))
+    (new chisel3.stage.ChiselStage).emitSystemVerilog(new SyncQueue1PortMem(UInt(16.W), 8), args)
   }
 }
 object OnePortMemMain {
   def main(args: Array[String]): Unit = {
-    chisel3.Driver.execute(args, () => new OnePortMem(UInt(16.W), 8, ""))
+    (new chisel3.stage.ChiselStage).emitSystemVerilog(new OnePortMem(UInt(16.W), 8, ""), args)
   }
 }
