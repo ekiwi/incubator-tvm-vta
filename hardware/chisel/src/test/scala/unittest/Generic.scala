@@ -25,11 +25,12 @@ import chisel3._
 import chisel3.util._
 import vta.util.config._
 import chisel3.iotesters._
-import vta.{JSONPynqConfig}
+import org.scalatest.flatspec.AnyFlatSpec
+import vta.JSONPynqConfig
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-import org.scalatest.{Matchers, FlatSpec}
-
-class GenericTest[T <: Module, P <: PeekPokeTester[T], C <: Parameters]( tag : String, dutFactory : (Parameters) => T, testerFactory : (T) => P) extends FlatSpec with Matchers {
+class GenericTest[T <: Module, P <: PeekPokeTester[T], C <: Parameters]( tag : String, dutFactory : (Parameters) => T, testerFactory : (T) => P) extends AnyFlatSpec with Matchers {
 
   implicit val p: Parameters = new JSONPynqConfig
 
