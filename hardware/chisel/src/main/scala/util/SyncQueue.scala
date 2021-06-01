@@ -32,7 +32,7 @@ class SyncQueueVTA[T <: Data](
     val entries: Int,
     pipe: Boolean = false,
     flow: Boolean = false)
-    extends Module() {
+    extends Module() with IsQueue[T] {
 
   val genType = gen
 
@@ -41,15 +41,14 @@ class SyncQueueVTA[T <: Data](
   require (!pipe, "-F- Not supported")
   require (!flow, "-F- Not supported")
 
-  val queue = if (JSONFeatures.queuesOld()) {
-    Module(new Queue(genType.asUInt, entries))
+  if (JSONFeatures.queuesOld()) {
+    io <> Module(new Queue(genType.asUInt, entries)).io
   } else {
-    Module(new SyncQueue2PortMem(genType.asUInt, entries))
+    io <> Module(new SyncQueue2PortMem(genType.asUInt, entries)).io
   }
-
-  io <> queue.io
-
 }
+
+trait IsQueue[T <: Data] { val io: QueueIO[T] }
 
 // Implement a Queue on a single-port memory
 // pipe/flow not supported
@@ -60,7 +59,7 @@ class SyncQueue1PortMem[T <: Data](
     val entries: Int,
     pipe: Boolean = false,
     flow: Boolean = false)
-    extends Module() {
+    extends Module() with IsQueue[T] {
 
   val genType = gen
 
@@ -83,7 +82,7 @@ class SyncQueue1PortMemImpl[T <: Data](
     val entries: Int,
     pipe: Boolean = false,
     flow: Boolean = false)
-    extends Module() {
+    extends Module() with IsQueue[T] {
 
   require (!pipe, "-F- Not supported")
   require (!flow, "-F- Not supported")
@@ -134,7 +133,7 @@ class SyncQueue2PortMem[T <: Data](
     val entries: Int,
     pipe: Boolean = false,
     flow: Boolean = false)
-    extends Module() {
+    extends Module() with IsQueue[T] {
 
   val genType = gen
 
@@ -156,7 +155,7 @@ class SyncQueue2PortMemImpl[T <: Data](
     val entries: Int,
     pipe: Boolean = false,
     flow: Boolean = false)
-    extends Module() {
+    extends Module() with IsQueue[T] {
 
   require (!pipe, "-F- Not supported")
   require (!flow, "-F- Not supported")
@@ -207,7 +206,7 @@ class SyncQueue2PortMemImpl[T <: Data](
 class DoubleQueue[T <: Data](
     gen: T,
     val entries: Int)
-    extends Module() {
+    extends Module() with IsQueue[T] {
 
   val genType = gen
 
@@ -282,7 +281,7 @@ class TwoCycleQueue[T <: Data](
     gen: T,
     val entries: Int,
     val qname: String)
-    extends Module() {
+    extends Module() with IsQueue[T] {
 
   val genType = gen
 
@@ -367,7 +366,7 @@ class OneCycleQueue[T <: Data](
     gen: T,
     val entries: Int,
     val qname: String)
-    extends Module() {
+    extends Module() with IsQueue[T] {
 
   val genType = gen
 
