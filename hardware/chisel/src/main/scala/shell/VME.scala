@@ -195,11 +195,8 @@ class VMEClient(implicit p: Parameters) extends Bundle {
  * it supports single-writer and multiple-reader mode and it is also based on AXI.
  */
 
-class VME(implicit p: Parameters) extends Module {
-  val io = IO(new Bundle {
-    val mem = new AXIMaster(p(ShellKey).memParams)
-    val vme = new VMEClient
-  })
+class VME(implicit p: Parameters) extends Module with IsVME {
+  val io = IO(new VMEIO)
   val clientCmdQueueDepth = p(ShellKey).vmeParams.clientCmdQueueDepth
   val clientDataQueueDepth = p(ShellKey).vmeParams.clientDataQueueDepth
   val RequestQueueDepth = p(ShellKey).vmeParams.RequestQueueDepth
@@ -401,16 +398,21 @@ class VMETop(implicit p: Parameters) extends Module {
     io <> vme.io
 
 }
+
+class VMEIO(implicit p: Parameters) extends Bundle {
+  val mem = new AXIMaster(p(ShellKey).memParams)
+  val vme = new VMEClient
+}
+
+trait IsVME { val io: VMEIO }
+
 /** VTA Memory Engine (VME).
  *
  * This unit multiplexes the memory controller interface for the Core. Currently,
  * it supports single-writer and multiple-reader mode and it is also based on AXI.
  */
-class VMEOld(implicit p: Parameters) extends Module {
-  val io = IO(new Bundle {
-    val mem = new AXIMaster(p(ShellKey).memParams)
-    val vme = new VMEClient
-  })
+class VMEOld(implicit p: Parameters) extends Module with IsVME {
+  val io = IO(new VMEIO)
 
   val nReadClients = p(ShellKey).vmeParams.nReadClients
   val rd_arb = Module(new Arbiter(new VMECmd, nReadClients))
