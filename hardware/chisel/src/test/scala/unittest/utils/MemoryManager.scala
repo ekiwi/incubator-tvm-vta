@@ -34,7 +34,6 @@ import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 import chisel3._
 import chisel3.util._
 import chisel3.iotesters.{ChiselFlatSpec, Driver, PeekPokeTester}
-import chisel3.{MultiIOModule}
 
 import vta.core._
 import vta.shell._
@@ -125,7 +124,7 @@ class UOPReadStateData (var valid: Boolean = false, /* initial value of data val
                     val dataValidSig: Bits /* chisel signal name for uop u fields valid */
                     ) {}
 
-class GeneralMemRead [T <: MultiIOModule] (tester: PeekPokeTester[T], dumpMemoryFileName: String = "")(implicit val p: Parameters) {
+class GeneralMemRead [T <: Module] (tester: PeekPokeTester[T], dumpMemoryFileName: String = "")(implicit val p: Parameters) {
     
   
   val vp = p(ShellKey).vcrParams

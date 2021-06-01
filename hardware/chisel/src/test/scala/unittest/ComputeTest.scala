@@ -27,7 +27,6 @@ import scala.math.pow
 import chisel3._
 import chisel3.util._
 import chisel3.iotesters.{ChiselFlatSpec, Driver, PeekPokeTester}
-import chisel3.{MultiIOModule}
 
 import vta.core._
 import vta.util.config._

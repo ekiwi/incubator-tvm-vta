@@ -22,13 +22,12 @@
 package vta.test
 
 import chisel3._
-import chisel3.MultiIOModule
 import vta.util.config._
 import vta.shell._
 import vta.dpi._
 
 /** Test. This generates a testbench file for simulation */
-class Test(implicit p: Parameters) extends MultiIOModule {
+class Test(implicit p: Parameters) extends Module {
   val sim_clock = IO(Input(Clock()))
   val sim_wait = IO(Output(Bool()))
   val mp = p(ShellKey).memParams
