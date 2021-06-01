@@ -27,12 +27,14 @@ import chisel3.util._
 import vta.util.config._
 
 
+trait IsQueue[T <: Data] { this: RawModule => def io: QueueIO[T] }
+
 class SyncQueueVTA[T <: Data](
     gen: T,
     val entries: Int,
     pipe: Boolean = false,
     flow: Boolean = false)
-    extends Module() {
+    extends Module with IsQueue[T] {
 
   val genType = gen
 
@@ -42,7 +44,7 @@ class SyncQueueVTA[T <: Data](
   require (!flow, "-F- Not supported")
 
   val queue = if (JSONFeatures.queuesOld()) {
-    Module(new Queue(genType.asUInt, entries))
+    Module(new Queue(genType.asUInt, entries) with IsQueue[UInt] )
   } else {
     Module(new SyncQueue2PortMem(genType.asUInt, entries))
   }
@@ -60,7 +62,7 @@ class SyncQueue1PortMem[T <: Data](
     val entries: Int,
     pipe: Boolean = false,
     flow: Boolean = false)
-    extends Module() {
+    extends Module with IsQueue[T] {
 
   val genType = gen
 
@@ -70,7 +72,7 @@ class SyncQueue1PortMem[T <: Data](
   require (!flow, "-F- Not supported")
 
   val queue = if (entries < 4 ) {
-    Module(new Queue(genType.asUInt, entries))
+    Module(new Queue(genType.asUInt, entries) with IsQueue[UInt])
   } else {
     Module(new SyncQueue1PortMemImpl(genType.asUInt, entries))
   }
@@ -83,7 +85,7 @@ class SyncQueue1PortMemImpl[T <: Data](
     val entries: Int,
     pipe: Boolean = false,
     flow: Boolean = false)
-    extends Module() {
+    extends Module with IsQueue[T] {
 
   require (!pipe, "-F- Not supported")
   require (!flow, "-F- Not supported")
@@ -134,7 +136,7 @@ class SyncQueue2PortMem[T <: Data](
     val entries: Int,
     pipe: Boolean = false,
     flow: Boolean = false)
-    extends Module() {
+    extends Module with IsQueue[T] {
 
   val genType = gen
 
@@ -144,7 +146,7 @@ class SyncQueue2PortMem[T <: Data](
   require (!flow, "-F- Not supported")
 
   val queue = if (entries < 4 ) {
-    Module(new Queue(genType.asUInt, entries))
+    Module(new Queue(genType.asUInt, entries) with IsQueue[UInt])
   } else {
     Module(new SyncQueue2PortMemImpl(genType.asUInt, entries))
   }
@@ -156,7 +158,7 @@ class SyncQueue2PortMemImpl[T <: Data](
     val entries: Int,
     pipe: Boolean = false,
     flow: Boolean = false)
-    extends Module() {
+    extends Module with IsQueue[T] {
 
   require (!pipe, "-F- Not supported")
   require (!flow, "-F- Not supported")
@@ -207,7 +209,7 @@ class SyncQueue2PortMemImpl[T <: Data](
 class DoubleQueue[T <: Data](
     gen: T,
     val entries: Int)
-    extends Module() {
+    extends Module with IsQueue[T] {
 
   val genType = gen
 
@@ -282,7 +284,7 @@ class TwoCycleQueue[T <: Data](
     gen: T,
     val entries: Int,
     val qname: String)
-    extends Module() {
+    extends Module with IsQueue[T] {
 
   val genType = gen
 
@@ -367,7 +369,7 @@ class OneCycleQueue[T <: Data](
     gen: T,
     val entries: Int,
     val qname: String)
-    extends Module() {
+    extends Module with IsQueue[T] {
 
   val genType = gen
 
