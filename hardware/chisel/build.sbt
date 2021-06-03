@@ -41,3 +41,9 @@ libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % "2.10
 libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.10.3"
 
 addCompilerPlugin("edu.berkeley.cs" % "chisel3-plugin" % "3.5-SNAPSHOT" cross CrossVersion.full)
+
+// paso dependency
+val realm = "GitHub Package Registry"
+resolvers += realm at "https://maven.pkg.github.com/ekiwi/paso"
+credentials ++= sys.env.get("GITHUB_TOKEN").map(t => Credentials(realm, "maven.pkg.github.com", "_", t))
+libraryDependencies += "edu.berkeley.cs" %% "paso" % "0.5.2-18-3fe070a4"
